@@ -1,6 +1,7 @@
 %This simulates a series of masses connected togeather by springs. 
 P1 = [-1,-1];
 P2 = [1,1];
+P3 = 
 k = 1;
 D_rest = 2;
 M1 = 1;
