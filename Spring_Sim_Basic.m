@@ -1,6 +1,6 @@
 %This simulates a series of masses connected togeather by springs. 
-P1 = [0,0];
-P2 = [3,2];
+P1 = [-1,-1];
+P2 = [1,1];
 k = 1;
 D_rest = 2;
 M1 = 1;
@@ -32,4 +32,13 @@ for i = 0:t_step
     p1_v = [p1_v;P1];
     p2_v = [p2_v;P2];
 end
-comet(p1_v(:,1),p1_v(:,2));
+
+for t = 1:t_step;
+clf;
+axis square;
+plot(p1_v(t,1),p1_v(t,2), '-ro');
+hold on
+plot(p2_v(t,1),p2_v(t,2), '-bo');
+axis([-3,3,-3,3]);
+pause(dt);
+end

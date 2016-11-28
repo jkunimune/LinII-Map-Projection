@@ -1,0 +1,1 @@
+multicomet([rand(100,1) + 5,rand(100,1), rand(100,1) - 5])
