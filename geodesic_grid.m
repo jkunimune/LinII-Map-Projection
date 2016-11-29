@@ -43,19 +43,18 @@ TriOld = [
     7, 9, 11;...
     8, 12, 10
     ];
-disp(TriOld);
 
 for i = 1:num_iterations
     
-    [numPoints, ~] = size(PtsOld);
-    [numFaces, ~] = size(TriOld);
+    numPoints = size(PtsOld,1);
+    numFaces = size(TriOld,1);
     
     PtsNew = [PtsOld; zeros(numFaces*3, 3)];
     TriNew = zeros(numFaces*4, 3);
     p_i = numPoints+1;
     t_i = 1;
     
-    for j = 1:numFaces
+    for j = 1:size(TriOld,1)
         Face = TriOld(j,:);
         
         % add the midpoint of each line to the grid
@@ -80,16 +79,36 @@ for i = 1:num_iterations
         t_i = t_i+1;
     end
     
+    % now remove duplicates
+    PtsOld = PtsNew;
+    PtsNew = zeros(numPoints+numFaces*3/2, 3);
+    p_i = 1;
+    for j_old = 1:size(PtsOld,1)
+        [~,j_new] = ismember(PtsOld(j_old,:),PtsNew,'rows');
+        if j_new == 0
+            PtsNew(p_i,:) = PtsOld(j_old,:);
+            j_new = p_i;
+            p_i = p_i+1;
+        else
+        end
+        
+        for k = 1:size(TriNew,1) % update all references
+            for l = 1:size(TriNew,2)
+                if TriNew(k,l) == j_old
+                    TriNew(k,l) = j_new;
+                end
+            end
+        end
+    end
+    
     PtsOld = PtsNew;
     TriOld = TriNew;
-    %disp(PtsNew);
     
 end
 
 figure;
 hold on;
-[numFaces, ~] = size(TriOld);
-for i = 1:numFaces
+for i = 1:size(TriOld,1)
     Face = TriOld(i,:);
     plot3(...
         PtsOld(Face(:),1),...
