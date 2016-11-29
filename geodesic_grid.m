@@ -106,16 +106,50 @@ for i = 1:num_iterations
     
 end
 
+Points = zeros(size(PtsOld,1), 3);
+Springs = zeros(size(TriOld,1)*3/2, 4);
+s_i = 1;
+for i = 1:size(PtsOld,1)
+    Points(i,:) = [getLatLon(PtsOld(i,:)), rand(1)];
+end
+for i = 1:size(TriOld,1)
+    for j = 1:3
+        v1 = TriOld(i,j);
+        v2 = TriOld(i,mod(j,3)+1);
+        if v1 < v2
+            m1 = Points(v1, 3);
+            m2 = Points(v2, 3);
+            k = (m1+m2)/2;
+            d = pdist([PtsOld(v1,:);PtsOld(v2,:)]);
+            Springs(s_i,:) = [v1, v2, k, d];
+            s_i = s_i+1;
+        end
+    end
+end
+
 figure;
 hold on;
-for i = 1:size(TriOld,1)
-    Face = TriOld(i,:);
-    plot3(...
-        PtsOld(Face(:),1),...
-        PtsOld(Face(:),2),...
-        PtsOld(Face(:),3),'-r');
+for i = 1:size(Springs,1)
+    P1 = PtsOld(Springs(i,1),:);
+    P2 = PtsOld(Springs(i,2),:);
+    k = Springs(i,3);
+    plot3([P1(1);P2(1)], [P1(2);P2(2)], [P1(3);P2(3)],...
+        'Color',[k k k],'LineStyle','--');
 end
-scatter3(PtsOld(:,1), PtsOld(:,2), PtsOld(:,3),'b.');
+for i = 1:size(PtsOld,1)
+    plot3(PtsOld(i,1), PtsOld(i,2), PtsOld(i,3),...
+        'Color',[k k k],'Marker','o');
+end
 axis equal;
+
+
+    function philam = getLatLon(Cartesian)
+        % assume norm(Cartesian) == 1
+        x = Cartesian(1);
+        y = Cartesian(2);
+        z = Cartesian(3);
+        philam = [asin(z), atan2(y,x)];
+        
+    end
 
 end
