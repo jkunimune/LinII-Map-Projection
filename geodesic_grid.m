@@ -106,8 +106,13 @@ for i = 1:num_iterations
     
 end
 
-Img = rgb2gray(imread(filename));
+Img = rgb2gray(imread(filename));   % load the image
 [img_H, img_W] = size(Img);
+
+% now plot it
+COLORMAP = [...
+    linspace(.5,0,10).', linspace(.5,0,10).', ones(10,1);...
+    zeros(10,1), linspace(1,.5,10).', zeros(10,1)];
 
 Points = zeros(size(PtsOld,1), 3);
 Springs = zeros(size(TriOld,1)*3/2, 4);
@@ -141,6 +146,7 @@ for i = 1:size(TriOld,1)
 end
 
 figure;
+colormap(COLORMAP);
 hold on;
 for i = 1:size(Springs,1)
     P1 = PtsOld(Springs(i,1),:);
@@ -149,10 +155,7 @@ for i = 1:size(Springs,1)
     plot3([P1(1);P2(1)], [P1(2);P2(2)], [P1(3);P2(3)],...
         'Color',[1-k 1-k 1-k],'LineStyle','-');
 end
-for i = 1:size(PtsOld,1)
-    plot3(PtsOld(i,1), PtsOld(i,2), PtsOld(i,3),...
-        'Color',[1-k 1-k 1-k],'Marker','o');
-end
+scatter3(PtsOld(:,1), PtsOld(:,2), PtsOld(:,3), 100, Points(:,3));
 axis equal;
 
 
