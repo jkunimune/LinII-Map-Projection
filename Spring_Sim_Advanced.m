@@ -6,14 +6,14 @@
 %Point_Array = [[0,0,10];[.4,.4,1];[1.4,.6,1];[.4,1.7,1]];
 %Springs_Array = [[1,2,1,10];[1,3,2,6];[1,4,1.5,8];[2,3,1,10];[3,4,3,5]];
 
-[Point_Array, Springs_Array] = geodesic_grid('weights/landmass.jpg',3);
+[Point_Array, Springs_Array] = geodesic_grid('weights/landmass.jpg',3,true);
 
 Velocity_Array = zeros(length(Point_Array),2);
-damp = .05;
+damp = .1;
 
 
-t = 40;
-t_step = 1000;
+t = 10;
+t_step = 200;
 dt =  t/t_step;
 damp = 1-damp*dt;
 
@@ -56,4 +56,5 @@ for j = 1:t_step
     points_vs_time(:,:,j) = Point_Array(:,1:2);
 end
 
-animateMaps(points_vs_time, linspace(0,t,t_step), Point_Array(:,3))
+animateMaps(points_vs_time, Springs_Array,...
+    linspace(0,t,t_step), Point_Array(:,3))

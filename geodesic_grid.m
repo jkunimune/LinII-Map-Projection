@@ -1,8 +1,9 @@
-function [Points, Springs] = geodesic_grid(filename, num_iterations)
+function [Points, Springs] = geodesic_grid(filename, num_iterations, cut)
 %% generates a geodesic grid with weights based on filename
 % num_iterations: number of points is 10*4^num_iterations
 % filename: the name of the file that contains the weights data
-% Points: an nx3 array where each row is a point, [phi, lambda, m]
+% cut: should the prime meridian be cut?
+% Points: an nx3 array where each row is a point, [x0, y0, m]
 % Springs: an mx4 array where each row is a spring, [i, j, k, l0]
 
 PHI = (1+sqrt(5))/2;
@@ -128,16 +129,28 @@ for i = 1:size(PtsOld,1)
         idx2 = img_W;
     end
     mass = double(Img(idx1,idx2)+20)/275.0;
-    Points(i,:) = [LatLon, mass];
+    ph = LatLon(1);
+    th = LatLon(2);
+    Points(i,:) = [th/1.7, asinh(tan(ph/2))*2/1.7, mass];
 end
 for i = 1:size(TriOld,1)
     for j = 1:3
         v1 = TriOld(i,j);
         v2 = TriOld(i,mod(j,3)+1);
         if v1 < v2
-            m1 = Points(v1, 3);
-            m2 = Points(v2, 3);
-            k = (m1+m2)/2;
+            P1 = PtsOld(v1,:);
+            P2 = PtsOld(v2,:);
+            there_should_be_a_spring =...
+                ~cut ||...
+                (P1(2)<0) == (P2(2)<0) ||...
+                P1(1) > 0 || P2(1) > 0;
+            if there_should_be_a_spring
+                m1 = Points(v1, 3);
+                m2 = Points(v2, 3);
+                k = (m1+m2)/2;
+            else
+                k = 0;
+            end
             d = pdist([PtsOld(v1,:);PtsOld(v2,:)]);
             Springs(s_i,:) = [v1, v2, k, d];
             s_i = s_i+1;
@@ -155,7 +168,8 @@ for i = 1:size(Springs,1)
     plot3([P1(1);P2(1)], [P1(2);P2(2)], [P1(3);P2(3)],...
         'Color',[1-k 1-k 1-k],'LineStyle','-');
 end
-scatter3(PtsOld(:,1), PtsOld(:,2), PtsOld(:,3), 100, Points(:,3));
+scatter3(PtsOld(:,1), PtsOld(:,2), PtsOld(:,3), 1000, Points(:,3),...
+    'Marker','.');
 axis equal;
 
 
