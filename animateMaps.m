@@ -26,7 +26,7 @@ for t = 1:length(T)
 %     end
     scatter(Pts(:,1,t), Pts(:,2,t), 1000, M(:), 'Marker','.');
     axis equal;
-    axis([-2,2,-2,2]);
+    axis([-2,2,-1,1]);
     if t < length(T)
         pause(T(t+1)-T(t));
     end

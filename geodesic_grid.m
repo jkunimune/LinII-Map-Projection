@@ -110,15 +110,15 @@ end
 Img = rgb2gray(imread(filename));   % load the image
 [img_H, img_W] = size(Img);
 
-% now plot it
 COLORMAP = [...
     linspace(.5,0,10).', linspace(.5,0,10).', ones(10,1);...
     zeros(10,1), linspace(1,.5,10).', zeros(10,1)];
 
+% build the output arrays
 Points = zeros(size(PtsOld,1), 3);
 Springs = zeros(size(TriOld,1)*3/2, 4);
 s_i = 1;
-for i = 1:size(PtsOld,1)
+for i = 1:size(PtsOld,1) % assign mass
     LatLon = getLatLon(PtsOld(i,:));
     idx1 = int32((pi/2-LatLon(1))/pi*img_H) + 1;
     idx2 = int32((LatLon(2)+pi)/(2*pi)*img_W) + 1;
@@ -128,12 +128,12 @@ for i = 1:size(PtsOld,1)
     if idx2 >= img_W
         idx2 = img_W;
     end
-    mass = double(Img(idx1,idx2)+20)/275.0;
+    mass = double(Img(idx1,idx2)+10)/265.0;
     ph = LatLon(1);
     th = LatLon(2);
-    Points(i,:) = [th/1.7, asinh(tan(ph/2))*2/1.7, mass];
+    Points(i,:) = [th/1.7, (1+sqrt(2)/2)*tan(ph/2)/1.7, mass];
 end
-for i = 1:size(TriOld,1)
+for i = 1:size(TriOld,1) % assign spring constants
     for j = 1:3
         v1 = TriOld(i,j);
         v2 = TriOld(i,mod(j,3)+1);
@@ -147,7 +147,7 @@ for i = 1:size(TriOld,1)
             if there_should_be_a_spring
                 m1 = Points(v1, 3);
                 m2 = Points(v2, 3);
-                k = (m1+m2)/2;
+                k = (m1+m2);
             else
                 k = 0;
             end
@@ -166,7 +166,7 @@ for i = 1:size(Springs,1)
     P2 = PtsOld(Springs(i,2),:);
     k = Springs(i,3);
     plot3([P1(1);P2(1)], [P1(2);P2(2)], [P1(3);P2(3)],...
-        'Color',[1-k 1-k 1-k],'LineStyle','-');
+        'Color',[1-k/2 1-k/2 1-k/2],'LineStyle','-');
 end
 scatter3(PtsOld(:,1), PtsOld(:,2), PtsOld(:,3), 1000, Points(:,3),...
     'Marker','.');

@@ -6,14 +6,15 @@
 %Point_Array = [[0,0,10];[.4,.4,1];[1.4,.6,1];[.4,1.7,1]];
 %Springs_Array = [[1,2,1,10];[1,3,2,6];[1,4,1.5,8];[2,3,1,10];[3,4,3,5]];
 
-[Point_Array, Springs_Array] = geodesic_grid('weights/landmass.jpg',3,true);
+[Point_Array, Springs_Array] = geodesic_grid('weights/landmass.jpg',4,true);
 
 Velocity_Array = zeros(length(Point_Array),2);
 damp = .1;
 
 
-t = 10;
-t_step = 200;
+t = 30;
+frame_rate = 30;
+t_step = t*frame_rate;
 dt =  t/t_step;
 damp = 1-damp*dt;
 
