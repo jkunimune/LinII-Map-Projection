@@ -1,7 +1,8 @@
-function [Points, Springs] = geodesic_grid(filename, num_iterations, cut)
+function [Points, Springs] = geodesic_grid(filename, num_iterations,ms,cut)
 %% generates a geodesic grid with weights based on filename
 % num_iterations: number of points is 10*4^num_iterations
 % filename: the name of the file that contains the weights data
+% ms: should there be more springs?
 % cut: should the prime meridian be cut?
 % Points: an nx3 array where each row is a point, [x0, y0, m]
 % Springs: an mx4 array where each row is a spring, [i, j, k, l0]
@@ -45,6 +46,7 @@ TriOld = [
     8, 12, 10
     ];
 
+%% iterate the polyhedron
 for i = 1:num_iterations
     
     numPoints = size(PtsOld,1);
@@ -107,6 +109,7 @@ for i = 1:num_iterations
     
 end
 
+%% prep image stuff
 Img = rgb2gray(imread(filename));   % load the image
 [img_H, img_W] = size(Img);
 
@@ -114,7 +117,7 @@ COLORMAP = [...
     linspace(.5,0,10).', linspace(.5,0,10).', ones(10,1);...
     zeros(10,1), linspace(1,.5,10).', zeros(10,1)];
 
-% build the output arrays
+%% reformat stuff
 Points = zeros(size(PtsOld,1), 3);
 Springs = zeros(size(TriOld,1)*3/2, 4);
 s_i = 1;
@@ -158,6 +161,15 @@ for i = 1:size(TriOld,1) % assign spring constants
     end
 end
 
+%% add more springs
+if ms
+    
+    SprNew = zeros(size(Spring_Array,1)*2, 4);
+    
+    
+end
+
+%% plot it
 figure;
 colormap(COLORMAP);
 hold on;
@@ -181,5 +193,8 @@ axis equal;
         philam = [asin(z), atan2(y,x)];
         
     end
+
+%% misc
+    function tup = keyFromVal
 
 end

@@ -1,4 +1,3 @@
 ﻿  C-Map-Projections.cpp
-c:\users\jkunimune\documents\github\linii-map-projection\c-map-projections\c-map-projections\c-map-projections.cpp(41): warning C4244: 'argument': conversion from 'double' to 'std::size_t', possible loss of data
-  C-Map-Projections.vcxproj -> C:\Users\jkunimune\Documents\GitHub\LinII-Map-Projection\C-Map-Projections\Debug\C-Map-Projections.exe
-  C-Map-Projections.vcxproj -> C:\Users\jkunimune\Documents\GitHub\LinII-Map-Projection\C-Map-Projections\Debug\C-Map-Projections.pdb (Full PDB)
+c:\users\jkunimune\documents\github\linii-map-projection\c-map-projections\c-map-projections\c-map-projections.cpp(217): warning C4244: 'argument': conversion from 'double' to 'std::size_t', possible loss of data
+c:\users\jkunimune\documents\github\linii-map-projection\c-map-projections\c-map-projections\c-map-projections.cpp(37): error C4716: 'newCart': must return a value
