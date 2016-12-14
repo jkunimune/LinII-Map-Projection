@@ -166,11 +166,7 @@ if ms
         SprNew(K) = Springs(K);
     end
     
-    timer = 0;
-    tott = length(keys(Springs));
     for K = cell2mat(keys(Springs))
-        disp(timer/tott);
-        timer=timer + 1;
         [i,j] = getIdx(K);
         for l = 1:size(Points,1)
             if l ~= i && l ~= j
@@ -179,18 +175,15 @@ if ms
                         if there_should_be_a_spring_between(...
                                 PtsOld(j,:),PtsOld(l,:),cut)
                             k = Points(j,3)+Points(l,3);
-                            d = pdist([PtsOld(j,:);PtsOld(l,:)]);
-                            SprNew(getKey(j,l)) = [k, d]; % now they are
+                        d = pdist([PtsOld(j,:);PtsOld(l,:)]);
+                        SprNew(getKey(j,l)) = [k, d]; % now they are
                         end
                     end
                 else                               % if i and l weren't adjacent
                     if isKey(Springs, getKey(j,l)) % and j and l were
-                        if there_should_be_a_spring_between(...
-                                PtsOld(i,:),PtsOld(l,:),cut)
-                            k = Points(i,3)+Points(l,3);
-                            d = pdist([PtsOld(i,:);PtsOld(l,:)]);
-                            SprNew(getKey(i,l)) = [k, d]; % link i and l
-                        end
+                        k = Points(i,3)+Points(l,3);
+                        d = pdist([PtsOld(i,:);PtsOld(l,:)]);
+                        SprNew(getKey(i,l)) = [k, d]; % link i and l
                     end
                 end
             end
@@ -216,9 +209,7 @@ for K = cell2mat(keys(Springs))
 end
 scatter3(PtsOld(:,1), PtsOld(:,2), PtsOld(:,3), 1000, Points(:,3),...
     'Marker','.');
-axis([-1,1,-1,1,-1,1]);
 axis equal;
-view(-140, 25);
 
 %% misc
     function philam = getLatLon(Cartesian)

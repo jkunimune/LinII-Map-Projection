@@ -24,9 +24,9 @@ for t = 1:length(T)
 %         plot([P1(1);P2(1)], [P1(2);P2(2)],...
 %             'Color',[1-k 1-k 1-k],'LineStyle','-');
 %     end
-    scatter(Pts(:,1,t), Pts(:,2,t), 1000, M(:), 'Marker','.');
+    scatter(Pts(:,1,t), Pts(:,2,t), 500, M(:), 'Marker','.');
     axis equal;
-    axis([-2,2,-1,1]);
+    axis([-2,2,-1.25,1.25]);
     if t < length(T)
         pause(T(t+1)-T(t));
     end
