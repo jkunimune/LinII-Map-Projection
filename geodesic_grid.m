@@ -135,7 +135,7 @@ for i = 1:size(PtsOld,1) % assign mass
     mass = double(Img(idx1,idx2)+10)/265.0;
     ph = LatLon(1);
     th = LatLon(2);
-    Points(i,:) = [th/1.7, (1+sqrt(2)/2)*tan(ph/2)/1.7, mass];
+    Points(i,:) = [th, (1+sqrt(2)/2)*tan(ph/2), mass];
 end
 for i = 1:size(TriOld,1) % assign spring constants
     for j = 1:3

@@ -6,10 +6,9 @@
 %Point_Array = [[0,0,10];[.4,.4,1];[1.4,.6,1];[.4,1.7,1]];
 %Springs_Map = [[1,2,1,10];[1,3,2,6];[1,4,1.5,8];[2,3,1,10];[3,4,3,5]];
 
-[Point_Array, Springs_Map] = geodesic_grid('weights/balanced.jpg',4,false,true);
+[Point_Array, Springs_Map] = geodesic_grid('weights/landmass.jpg',4,true,true);
 
 Velocity_Array = zeros(length(Point_Array),2);
-
 
 t = 20;
 frame_rate = 20;
